@@ -29,7 +29,11 @@ class TodoApiUnitTests(unittest.TestCase):
                         "title": "scan paperwork",
                         "doneStatus": "false",
                         "description": "",
-                        "categories": [{"id": "1"}],
+                        "categories": [{
+                            "id": "1",
+                            "title": "Office",
+                            "description": ""
+                            }],
                         "tasksof": [{"id": "1"}]
                     },
                     {
@@ -82,6 +86,49 @@ class TodoApiUnitTests(unittest.TestCase):
                         "doneStatus": "true",
                         "description": "all paperwork has been scanned"
         }   
+
+        cls.home_category ={
+          "id": "2",
+          "title": "Home",
+          "description": ""
+        }
+
+        cls.updated_paperwork_bedroom_json_response =  {
+                        "id": "1",
+                        "title": "scan paperwork",
+                        "doneStatus": "false",
+                        "description": "",
+                        "categories": [{
+                            "id": "1",
+                            "title": "master bedroom",
+                            "description": ""
+                            }],
+                        "tasksof": [{"id": "1"}]
+         }
+        
+
+        cls.updated_all_ids_json = {
+                "todos": [
+                    {
+                        "id": "1",
+                        "title": "scan paperwork",
+                        "doneStatus": "false",
+                        "description": "",
+                        "tasksof": [{"id": "1"}]
+                    },
+                    {
+                        "id": "2",
+                        "title": "file paperwork",
+                        "doneStatus": "false",
+                        "description": "",
+                        "tasksof": [
+                            {
+                                "id": "1"
+                            }
+                        ]
+                    }
+                ]
+            }
             
             
     def setUp(self):
@@ -120,97 +167,55 @@ class TodoApiUnitTests(unittest.TestCase):
         APPLICATION_RUNNING = False
 
 
-    # Tests get all todos
-    def test_get_todos(self):
-        response = requests.get(BASE_URL + "/todos", headers={"Accept": "application/json"})
+    # Tests get a todo's cateogires 
+    def test_get_todo_cateogires(self):
+        id = 1
+        response = requests.get(BASE_URL + f"/todos/{id}/categories", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
         actual_json = response.json()
-        diff = DeepDiff(actual_json, self.expected_json_all_ids, ignore_order=True)
+        diff = DeepDiff(actual_json["categories"], self.expected_json_all_ids["todos"][0]["categories"], ignore_order=True)
         self.assertEqual(diff, {}, f"Differences found: {diff}")
 
-
-
-
-
-    # Tests get todo by id
-    def test_get_todo(self):
+    # Tests head a todo's cateogires 
+    def test_head_todo_cateogires(self):
         id = 1
-        response = requests.get(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"})
-        self.assertEqual(response.status_code, 200)
-        actual_json = response.json()
-        diff = DeepDiff(actual_json["todos"][0], self.expected_json_all_ids["todos"][0], ignore_order=True)
-        self.assertEqual(diff, {}, f"Differences found: {diff}")
-
-    
-    
-
-
-
-    # Tests get header for all todos
-    def test_get_header(self):
-        response = requests.head(BASE_URL + f"/todos", headers={"Accept": "application/json"})
+        response = requests.head(BASE_URL + f"/todos/{id}/categories", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
 
 
-    # Tests get header for todo by id
-    def test_get_header_id(self):
-        id = 1
-        response = requests.head(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"})
-        self.assertEqual(response.status_code, 200)
-
-
-
-    # Tests post todo
-    def test_post_todo(self):
-        id = 3
-        response = requests.post(BASE_URL + f"/todos", headers={"Accept": "application/json"}, json=self.dishes_json)
+    # Tests post a todo's category
+    def test_post_todo_cateogires(self):
+        id = 2
+        response = requests.post(BASE_URL + f"/todos/{id}/categories", headers={"Accept": "application/json"}, json=self.home_category)
         self.assertEqual(response.status_code, 201)
         
-        response = requests.get(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"})
+        response = requests.get(BASE_URL + f"/todos/{id}/categories", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
         actual_json = response.json()
-        diff = DeepDiff(actual_json["todos"][0], self.dishes_json_response, ignore_order=True)
+
+
+        diff = DeepDiff(actual_json["categories"][0], self.home_category, ignore_order=True)
         self.assertEqual(diff, {}, f"Differences found: {diff}")
 
 
-    # Tests post todo by id
-    def test_post_todo_by_id(self):
+    # Tests Delete a todo's category by id
+    def test_delete_todo_cateogires(self):
         id = 1
-        response = requests.post(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"}, json=self.update_paperwork_json)
+        response = requests.delete(BASE_URL + f"/todos/{id}/categories/{id}", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
         
-        response = requests.get(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"})
+        response = requests.get(BASE_URL + f"/todos", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
         actual_json = response.json()
-        diff = DeepDiff(actual_json["todos"][0], self.update_paperwork_json_response, ignore_order=True)
+
+
+        diff = DeepDiff(actual_json, self.updated_all_ids_json, ignore_order=True)
         self.assertEqual(diff, {}, f"Differences found: {diff}")
 
 
-
-    # Tests put todo by id
-    def test_put_todo_by_id(self):
-        id = 1
-        response = requests.put(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"}, json=self.update_paperwork_json)
-        self.assertEqual(response.status_code, 200)
         
-        response = requests.get(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"})
-        self.assertEqual(response.status_code, 200)
-        actual_json = response.json()
-        diff = DeepDiff(actual_json["todos"][0], self.update_paperwork_json_response_put, ignore_order=True)
-        self.assertEqual(diff, {}, f"Differences found: {diff}")
 
-    # Tests delete todo by id
-    def test_delete_todo_by_id(self):
-        id = 2
-        response = requests.delete(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"})
-        self.assertEqual(response.status_code, 200)
-        
-        response = requests.get(BASE_URL + f"/todos/{id}", headers={"Accept": "application/json"})
-        self.assertEqual(response.status_code, 404)
 
-        expected_error = {"errorMessages": [f"Could not find an instance with todos/{id}"]}
-        actual_json = response.json()  
-        self.assertEqual(actual_json, expected_error)
 
 
     
