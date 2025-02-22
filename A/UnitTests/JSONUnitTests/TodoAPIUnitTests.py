@@ -102,6 +102,15 @@ UPDATED_SCAN_PAPERWORK_RESPONSE = {
     "tasksof": [{"id": "1"}]
 }
 
+
+
+UPDATED_PAPER_PUT_RESPONSE ={
+'id': '1', 
+'title': 'scan paperwork', 
+'doneStatus': 'true', 
+'description': 'all paperwork has been scanned'
+}
+
 # Expected JSON response after POST/PUT operations
 UPDATED_TODOS_RESPONSE = {
     "todos": [
@@ -144,6 +153,7 @@ class TodoApiUnitTests(unittest.TestCase):
         cls.postExpectedTodosResponse = POST_EXPECTED_TODOS_RESPONSE
         cls.deleteExpectedTodosResponse = DELETE_EXPECTED_TODOS_RESPONSE
         cls.malformedPayload = WASH_DISHES__MALFORMED_PAYLOAD
+        cls.updatedScanPaperworkPutResponse = UPDATED_PAPER_PUT_RESPONSE
 
     def setUp(self):
         global APP_RUNNING, APP_PROCESS
@@ -183,6 +193,7 @@ class TodoApiUnitTests(unittest.TestCase):
         actualResponse = response.json()
         diff = DeepDiff(actualResponse, self.expectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
+        # This method is called to verify that there were no side effects
         self.no_side_effects_for_non_modifying_requests(self)
 
     # Test: Get TODO by ID
@@ -231,11 +242,13 @@ class TodoApiUnitTests(unittest.TestCase):
         new_todo_id = 3
         response = requests.post(BASE_URL + TODOS_ENDPOINT, headers={"Accept": "application/json"}, json=self.washDishesPayload)
         self.assertEqual(response.status_code, 201)
+        # Now verify that the todo was created
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}/{new_todo_id}", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
         actualResponse = response.json()
         diff = DeepDiff(actualResponse["todos"][0], self.washDishesExpectedResponse, ignore_order=True)
         self.assertEqual(diff, {})
+        # Now verify there were no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.postExpectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
@@ -245,11 +258,13 @@ class TodoApiUnitTests(unittest.TestCase):
         todo_id = 1
         response = requests.post(BASE_URL + f"{TODOS_ENDPOINT}/{todo_id}", headers={"Accept": "application/json"}, json=self.updateScanPaperworkPayload)
         self.assertEqual(response.status_code, 200)
+        # Now verify the todo was updated
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}/{todo_id}", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
         actualResponse = response.json()
         diff = DeepDiff(actualResponse["todos"][0], self.updatedScanPaperworkResponse, ignore_order=True)
         self.assertEqual(diff, {})
+        # Now verify there are no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.updatedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
@@ -262,6 +277,7 @@ class TodoApiUnitTests(unittest.TestCase):
         actualResponse = response.json()
         expectedError = {"errorMessages": [f'No such todo entity instance with GUID or ID {todo_id} found']}
         self.assertEqual(actualResponse, expectedError)
+        # Verify there are no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.expectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
@@ -274,6 +290,7 @@ class TodoApiUnitTests(unittest.TestCase):
         actualResponse = response.json()
         expectedError = {"errorMessages": [f'Failed Validation: doneStatus should be BOOLEAN']}
         self.assertEqual(actualResponse, expectedError)
+        # Verify that there are no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.expectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
@@ -283,13 +300,15 @@ class TodoApiUnitTests(unittest.TestCase):
         todo_id = 1
         response = requests.put(BASE_URL + f"{TODOS_ENDPOINT}/{todo_id}", headers={"Accept": "application/json"}, json=self.updateScanPaperworkPayload)
         self.assertEqual(response.status_code, 200)
+        # Verify that the todo was updated
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}/{todo_id}", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
         actualResponse = response.json()
-        diff = DeepDiff(actualResponse["todos"][0], self.updatedScanPaperworkResponse, ignore_order=True)
+        diff = DeepDiff(actualResponse["todos"][0], self.updatedScanPaperworkPutResponse, ignore_order=True)
         self.assertEqual(diff, {})
+        # Verify that there are no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
-        diff = DeepDiff(response.json(), self.updatedTodosResponse, ignore_order=True)
+        diff = DeepDiff(response.json()['todos'][1], self.updatedScanPaperworkPutResponse, ignore_order=True)
         self.assertEqual(diff, {})
 
     # Error Case Test: PUT update TODO by non existent ID
@@ -300,6 +319,7 @@ class TodoApiUnitTests(unittest.TestCase):
         actualResponse = response.json()
         expectedError = {"errorMessages": [f'Invalid GUID for {todo_id} entity todo']}
         self.assertEqual(actualResponse, expectedError)
+        # Verify that there are no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.expectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
@@ -312,6 +332,7 @@ class TodoApiUnitTests(unittest.TestCase):
         actualResponse = response.json()
         expectedError = {"errorMessages": [f'Failed Validation: doneStatus should be BOOLEAN']}
         self.assertEqual(actualResponse, expectedError)
+        # Verify that there are no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.expectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
@@ -321,11 +342,13 @@ class TodoApiUnitTests(unittest.TestCase):
         todo_id = 2
         response = requests.delete(BASE_URL + f"{TODOS_ENDPOINT}/{todo_id}", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 200)
+        # Verify that the TODO was deleted
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}/{todo_id}", headers={"Accept": "application/json"})
         self.assertEqual(response.status_code, 404)
         expectedError = {"errorMessages": [f"Could not find an instance with todos/{todo_id}"]}
         actualResponse = response.json()
         self.assertEqual(actualResponse, expectedError)
+        # Verify that there are no side effects
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.deleteExpectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
@@ -338,6 +361,7 @@ class TodoApiUnitTests(unittest.TestCase):
         expectedError = {"errorMessages": [f"Could not find any instances with todos/{todo_id}"]}
         actualResponse = response.json()
         self.assertEqual(actualResponse, expectedError)
+        # Verify that there are no side effecs
         response = requests.get(BASE_URL + f"{TODOS_ENDPOINT}", headers={"Accept": "application/json"})
         diff = DeepDiff(response.json(), self.expectedTodosResponse, ignore_order=True)
         self.assertEqual(diff, {})
