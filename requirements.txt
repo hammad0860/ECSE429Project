@@ -2,3 +2,12 @@ requests
 pytest
 jsonschema
 deepdiff
+behave
+coffeescript
+xmltodict
+dicttoxml
+xml
+xmljson 
+pytest-randomly
+
+

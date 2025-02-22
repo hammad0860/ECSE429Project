@@ -1,9 +1,8 @@
 # ECSE429Project
+To run the tests ensure you have Python version 3.10.5 installed and configured.
 
-pip install -r requirements.txt
+To install the dependencies ensure you are in the root directory and use the following command: pip install -r requirements.txt
 
 
-
-undocumented behaviour, when you use post to associate a cateogry with a todo, if you have more information in the cateogry besides id, the post still goes through.
-
+To run the tests run the runTests.py file either through an IDE or by ensuring you are in directory A and using the following command: python runTests.py
 
