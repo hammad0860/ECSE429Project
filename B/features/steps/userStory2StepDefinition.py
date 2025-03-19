@@ -50,7 +50,6 @@ def step_verify_todo_description(context, todo_title, new_description):
 
 
 # Error Flow: Update a non-existent TODO's description
-
 @when('the student updates the TODO with id "{id}" to have a new description "{new_description}"')
 def step_update_non_existent_todo(context, id, new_description):
     update_data = {"description": new_description}

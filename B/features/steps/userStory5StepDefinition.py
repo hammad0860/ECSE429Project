@@ -8,7 +8,6 @@ BASE_URL = "http://localhost:4567"
 # Feature: Create a New TODO
 
 # Normal Flow: Creating a New TODO with Title and Description
-
 @when('the student creates a new TODO with todo_title "{todo_title}" and description "{description}"')
 def step_create_todo_generic(context, todo_title, description):
 
@@ -41,7 +40,6 @@ def step_verify_creation_success(context):
 
 
 # Alternative Flow: Creating a New TODO with Title Only
-
 @when('the student creates a new TODO with todo_title "{todo_title}" and no description')
 def step_create_todo_with_title_only(context, todo_title):
 
@@ -71,7 +69,6 @@ def step_verify_todo_created_with_empty_desc(context, todo_title):
     assert found
 
 # Error Flow: Creating a New TODO with an Invalid doneStatus
-
 @given('the doneStatus "{doneStatus}" is invalid')
 def step_invalid_doneStatus(context, doneStatus):
     assert doneStatus not in ["true", "false"]

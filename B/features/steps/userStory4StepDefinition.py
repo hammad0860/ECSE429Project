@@ -8,7 +8,6 @@ BASE_URL = "http://localhost:4567"
 #Feature: Associate a TODO with a Project
 
 # Normal flow: Associate a TODO with a Project
-
 @when('the student associates the TODO "{todo_title}" with the project "{project_title}"')
 def step_associate_todo_with_project(context, project_title, todo_title):
 
@@ -47,7 +46,6 @@ def step_verify_todo_association(context, todo_title, project_title):
 
 
 # Alternate flow: Associate a TODO with a different Project
-
 @when('the student associates the TODO "{todo_title}" with a different project "{new_project}"')
 def step_associate_todo_with_different_project(context, todo_title, new_project):
   
@@ -92,7 +90,6 @@ def step_verify_association_success(context):
 
 
 # Error Flow: Associate a TODO with a non-existent Project
-
 @when('the student attempts to associate the TODO with id "{id}" with the project "{project_title}"')
 def step_attempt_associate_todo_by_id(context, id, project_title):
 

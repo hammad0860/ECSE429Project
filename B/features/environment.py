@@ -27,9 +27,6 @@ def stop_application():
         pass
     APPLICATION_PROCESS.terminate()
 
-
-
-
 def wait_for_server():
     for _ in range(10):
         try:

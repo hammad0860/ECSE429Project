@@ -28,7 +28,6 @@ def step_verify_deletion_success(context):
 
 
 # Error Flow: Remove a non-existent TODO
-
 @when('the student deletes the TODO with id "{id}"')
 def step_delete_todo_by_id(context, id):
 

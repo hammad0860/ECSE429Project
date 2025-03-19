@@ -52,7 +52,6 @@ def step_verify_todo_status(context, todo_title, doneStatus):
 
 
 # Alternate Flow: Mark a project-associated TODO as done 
-
 @when('the student updates the doneStatus status of the associated TODO with title "{todo_title}" to "{doneStatus}"')
 def step_update_todo_associated_with_project(context, todo_title, doneStatus):
 
@@ -88,7 +87,6 @@ def step_verify_associated_todo_status(context, todo_title, doneStatus):
 
 
 # Error Flow: Attempt to mark a non-existent TODO as done
-
 @when('the student updates the doneStatus status of the TODO with id "{id}" to "{doneStatus}"')
 def step_update_nonexistent_task(context, id, doneStatus):
     bool_value = bool(strtobool(doneStatus))
