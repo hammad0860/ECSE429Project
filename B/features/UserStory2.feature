@@ -32,8 +32,8 @@ Scenario Outline: Change a TODO's description (Normal Flow)
 
 Scenario Outline: Change a TODO's description that is associated with a project (Alternate Flow)
   Given the TODO "<todo_title>" is associated with the project "<project_title>"
-  When the student updates the todo "<todo_title>" to have a new description "<new_description>"
-  Then the todo "<todo_title>" should now have the description "<new_description>"
+  When the student updates the TODO "<todo_title>" to have a new description "<new_description>"
+  Then the TODO "<todo_title>" should now have the description "<new_description>"
   And the student is notified that the update operation was successful
 
   Examples:
@@ -45,8 +45,8 @@ Scenario Outline: Change a TODO's description that is associated with a project 
 
 
 Scenario Outline: Attempting to change the description of a non-existent TODO (Error Flow)
-  Given no todo exists with the id "<id>"
-  When the student updates the todo with id "<id>" to have a new description "<new_description>"
+  Given no TODO exists with the id "<id>"
+  When the student updates the TODO with id "<id>" to have a new description "<new_description>"
   Then the system should notify the student with the not found error message "<message>"
 
   Examples:

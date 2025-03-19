@@ -1,15 +1,8 @@
 Feature: Creating a New TODO
-  As a student, I want to create a new TODO, so that I can add new tasks to my list.
+  As a student, I want to create a new TODO, so that I can organize my tasks effectively.
 
 Background:
   Given the server is running
-    And the following TODOS exist:
-        | todo_title               | doneStatus | description                     |
-        | Implement a linked list  | false      | data structure assignment       |
-        | Analyze time complexity  | false      | O(n) vs O(log n) analysis       |
-        | Summarize Hamlet         | false      | Focus on Act 3                  |
-        | Think about stuff        | false      | dont think too much             |
-
 
 Scenario Outline: Create a New TODO with a title and description (Normal Flow)
   When the student creates a new TODO with todo_title "<todo_title>" and description "<description>"
@@ -38,7 +31,7 @@ Scenario Outline: Create a New TODO with only a title (Alternate Flow)
 
 
 Scenario Outline: Attempt to create a new TODO with an invalid doneStatus value (Error Flow)
-  Given the server is running
+  Given the doneStatus "<doneStatus>" is invalid
   When the student creates a new TODO with todo_title "<todo_title>", description "<description>" and doneStatus "<doneStatus>"
   Then the system should notify the student with the error message "<error_message>"
 

@@ -1,5 +1,5 @@
 Feature: Removing a TODO
-  As a student, I want to remove a TODO, so that I can clear out work that is no longer needed.
+  As a student, I want to remove a TODO, so that I can clear out tasks that are no longer needed.
 
 Background:
   Given the server is running

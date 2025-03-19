@@ -53,14 +53,6 @@ def step_verify_todo_status(context, todo_title, doneStatus):
 
 # Alternate Flow: Mark a project-associated TODO as done 
 
-@given('the TODO with title "{todo_title}" exists')
-def step_todo_exists(context, todo_title):
-    todo_id = get_todo_id_by_title(todo_title)
-    assert todo_id is not None
-
-
-
-
 @when('the student updates the doneStatus status of the associated TODO with title "{todo_title}" to "{doneStatus}"')
 def step_update_todo_associated_with_project(context, todo_title, doneStatus):
 

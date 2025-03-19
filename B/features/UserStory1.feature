@@ -1,5 +1,5 @@
 Feature: Marking finished TODOs
-  As a student, I want to mark TODOs as done once I'm done with them, so I can track my progress.
+  As a student, I want to mark TODOs as done once I'm done with them, so I can track my progress more efficiently.
 
 Background:
   Given the server is running
@@ -29,8 +29,7 @@ Scenario Outline: Mark a TODO as done (Normal Flow)
     | Think about stuff        | true       |
 
 Scenario Outline: Mark a project-associated TODO as done (Alternate Flow)
-  Given the TODO with title "<todo_title>" exists
-  And the TODO "<todo_title>" is associated with the project "<project_title>"
+  Given the TODO "<todo_title>" is associated with the project "<project_title>"
   When the student updates the doneStatus status of the associated TODO with title "<todo_title>" to "<doneStatus>"
   Then the associated TODO with the title "<todo_title>" should now have a doneStatus status of "<doneStatus>"
   And the student is notified that the update operation was successful

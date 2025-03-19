@@ -1,5 +1,5 @@
 Feature: Associating a TODO with a Project
-  As a student, I want to associate a TODO with a project, so that I can organize my tasks under specific projects.
+  As a student, I want to associate a TODO with a project, so that I can keep related tasks grouped together.
 
 Background:
   Given the server is running

@@ -72,6 +72,10 @@ def step_verify_todo_created_with_empty_desc(context, todo_title):
 
 # Error Flow: Creating a New TODO with an Invalid doneStatus
 
+@given('the doneStatus "{doneStatus}" is invalid')
+def step_invalid_doneStatus(context, doneStatus):
+    assert doneStatus not in ["true", "false"]
+
 @when('the student creates a new TODO with todo_title "{todo_title}", description "{description}" and doneStatus "{doneStatus}"')
 def step_create_todo_with_invalid_doneStatus(context, todo_title, description, doneStatus):
     payload = {

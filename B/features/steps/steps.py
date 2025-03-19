@@ -15,7 +15,7 @@ def step_server_running(context):
     response = requests.get(f"{BASE_URL}/todos")
     assert response.status_code == 200
 
-# Used for all of the features
+# Used for the features 1, 2, 3, 4
 @given("the following TODOs exist")
 def step_todos_exist(context):
     for row in context.table:
@@ -49,7 +49,6 @@ def step_projects_exist(context):
             headers={"Content-Type": "application/json", "Accept": "application/json"}
         )
         assert response.status_code == 201
-
 
 
 # Used for the features 1, 2, 3, 4
