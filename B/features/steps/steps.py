@@ -9,11 +9,13 @@ BASE_URL = "http://localhost:4567"
 
 
 # Checks if GET /todos returns 200, meaning server is up.
+# Used for all of the features
 @given("the server is running")
 def step_server_running(context):
     response = requests.get(f"{BASE_URL}/todos")
     assert response.status_code == 200
 
+# Used for all of the features
 @given("the following TODOs exist")
 def step_todos_exist(context):
     for row in context.table:
@@ -30,6 +32,7 @@ def step_todos_exist(context):
         assert response.status_code == 201
 
 
+# Used for the features 1, 2, 3, 4
 @given("the following projects exist")
 def step_projects_exist(context):
 
@@ -49,7 +52,7 @@ def step_projects_exist(context):
 
 
 
-
+# Used for the features 1, 2, 3, 4
 @given('the TODO "{todo_title}" is associated with the project "{project_title}"')
 def step_associate_todo_with_project(context, project_title, todo_title):
 
@@ -67,7 +70,7 @@ def step_associate_todo_with_project(context, project_title, todo_title):
     assert response.status_code == 201
 
 
-
+# Used for the features 1, 2, 3, 4
 @given('no TODO exists with the id "{id}"')
 def step_non_existent_task(context, id):
 
@@ -75,26 +78,13 @@ def step_non_existent_task(context, id):
     assert response.status_code == 404
 
 
-
+# Used for the features 1, 2
 @then("the student is notified that the update operation was successful")
 def step_verify_project_update_success_notification(context):
 
     assert context.response.status_code == 200
 
-
-
-@then('the system should notify the student with the error message "{message}"')
-def step_verify_error_message(context, message):
- 
-    assert context.response.status_code  == 400 
-    error_data = context.response.json()
-
-    error_message = error_data.get("errorMessages")[0]
-    
-    
-    assert message == error_message
-
-
+# Used for the features 1, 2, 3, 4
 @then('the system should notify the student with the not found error message "{message}"')
 def step_verify_error_message(context, message):
  

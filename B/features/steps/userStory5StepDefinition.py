@@ -72,7 +72,6 @@ def step_verify_todo_created_with_empty_desc(context, todo_title):
 
 # Error Flow: Creating a New TODO with an Invalid doneStatus
 
-
 @when('the student creates a new TODO with todo_title "{todo_title}", description "{description}" and doneStatus "{doneStatus}"')
 def step_create_todo_with_invalid_doneStatus(context, todo_title, description, doneStatus):
     payload = {
@@ -87,6 +86,18 @@ def step_create_todo_with_invalid_doneStatus(context, todo_title, description, d
     )
     
     context.response = response
+
+
+@then('the system should notify the student with the error message "{message}"')
+def step_verify_error_message(context, message):
+ 
+    assert context.response.status_code  == 400 
+    error_data = context.response.json()
+
+    error_message = error_data.get("errorMessages")[0]
+    
+    
+    assert message == error_message
 
 
 
