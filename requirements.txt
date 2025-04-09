@@ -9,6 +9,12 @@ dicttoxml
 xmljson 
 pytest-randomly
 behave
+faker
+psutil
+matplotlib
+pandas
+
+
 
 
 
